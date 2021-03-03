@@ -1,0 +1,21 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container center_div">
+
+  {% if user.is_authenticated %}
+  <h2>Change User Profile</h2>
+  
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {% else %}
+  <h2> Please login first</h2>
+  {% endif %}
+
+</div>
+
+{% endblock %}
