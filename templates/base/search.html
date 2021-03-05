@@ -2,11 +2,16 @@
 
 {% block content %}
 
-<h1>Home Page</h1>
+<h1>Search</h1>
 
 <form class="form-inline mx-2 my-2 my-lg-0">
   <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
   <button class="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
 </form>
+
+{% for obj in object_list %}
+  {{obj.title}}
+  <hr>
+{% endfor %}
 
 {% endblock %}

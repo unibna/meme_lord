@@ -38,7 +38,7 @@ class Category(models.Model):
             self.slug = self.__generate_unique_slug()
         
         return reverse('category_detail', kwargs={'slug': self.slug})
-
+    
 
 class Post(models.Model):
     # id field created in defautl
@@ -50,7 +50,7 @@ class Post(models.Model):
     category = models.ManyToManyField(Category)
 
     def __str__(self):
-        return sellf.title
+        return self.title
 
     def __generate_unique_slug(self):
 
@@ -78,6 +78,10 @@ class Post(models.Model):
         
         return reverse('post_detail', kwargs={'slug': self.slug})
 
+    @property
+    def number_of_comments(self):
+        return Comment.objects.filter(post=self).count()
+
 
 class Comment(models.Model):
     # id field created in defautl
@@ -85,3 +89,5 @@ class Comment(models.Model):
     author = models.CharField(max_length=150, default="Anonymous", blank=True)
     content = models.TextField()
     date = models.DateTimeField(default=timezone.now)
+
+

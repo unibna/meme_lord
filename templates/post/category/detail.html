@@ -7,7 +7,12 @@
 <small>This page shows all post related to this category</small>
 <br>
 <small>Coming soon ... </small>
-
+<hr>
+{% for post in posts %}
+    <h3>{{post}}</h3>
+    {{post.description}}
+    <hr>
+{% endfor %}
 
 
 {% endblock %}

@@ -4,6 +4,9 @@ from django.views.generic import CreateView, ListView, DetailView
 from .models import *
 from . import forms
 
+from itertools import chain
+
+
 class CategoryCreationView(CreateView):
 
     model = Category
@@ -24,8 +27,23 @@ class CategoryDetailView(DetailView):
 
     model = Category
     template_name = 'post/category/detail.html'
+    query_pk_and_slug = True
     # default of slug_field and slug_url_kwarg also are 'slug'
     # so we don't need to set in this case
+
+    def get_object(self):
+        # replace objects.get() by objects.filter
+        # cause the get function can not handle in the case 
+        # more than 2 result returned
+        return Category.objects.filter(slug=self.kwargs[self.slug_url_kwarg])
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+
+        # __in: return the post'category in the queryset
+        context['posts'] = Post.objects.filter(category__in=self.get_object())
+
+        return context
 
 
 class PostCreateView(CreateView):
@@ -77,3 +95,21 @@ class PostDetailView(DetailView):
                             )
         new_comment.save()
         return self.get(self, request,*arg, **kwargs)
+
+
+class SearchingView(ListView):
+
+    model = Post
+    template_name = 'base/search.html'
+
+    def get_context_data(self, *args, **kwargs):
+
+        data = super().get_context_data(*args, **kwargs)
+
+        posts = Post.objects.filter(title__contains="em")
+        categories = Category.objects.filter(name__contains="em")
+
+        for field in data:
+            print(field) 
+
+        return data

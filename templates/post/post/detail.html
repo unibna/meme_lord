@@ -30,7 +30,7 @@ Cateogry:
   {% endif %}
 
   {% if comments %}
-  <!-- <strong class="text-secondary">{{ object.number_of_comments }} Comment{{ object.number_of_comments|pluralize }}</strong> -->
+  <strong class="text-secondary">{{ object.number_of_comments }} Comment{{ object.number_of_comments|pluralize }}</strong>
   <hr>
   <ul>
     {% for comment in comments %}
