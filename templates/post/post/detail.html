@@ -1,56 +1,70 @@
 {% extends 'base/base.html' %}
+{% load static %}
+
+{% block other_link %}
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'post/css/post_list_style.css' %}">
+{% endblock %}
 
 {% block content %}
+<div class="container bootstrap snippets bootdey my-4">
+    <div class="col-sm-8">
+        <div class="panel panel-white post panel-shadow">
+            <div class="post-heading">
+                <div class="pull-left image">
+                    <img src="{{post.author.avatar.url}}" class="img-circle avatar" alt="user profile image">
+                </div>
+                <div class="pull-left meta">
+                    <div class="title h5">
+                        <a href="{{post.author.get_profile_url}}"><b>{{post.author.username}}</b></a>
+                        made a post.
+                    </div>
+                    <h6 class="text-muted time">{{post.date}}</h6>
+                </div>
+            </div> 
+            <div class="post-description"> 
+                <p>{{post.description}}</p>
+                <img src="{{post.meme.url}}" width="300" height="300">
+                <!-- <div class="stats">
+                    <a href="#" class="btn btn-default stat-item">
+                        <i class="fa fa-thumbs-up icon"></i>2
+                    </a>
+                    <a href="#" class="btn btn-default stat-item">
+                        <i class="fa fa-share icon"></i>12
+                    </a>
+                </div> -->
+            </div>
+            <div class="post-footer">
 
-<h1>Post Detail</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-group"> 
+                        <input class="form-control" placeholder="Add a comment" type="text" name="content">
+                        <span class="input-group-addon">
+                            <a type="submit" href="#"><i class="fa fa-edit"></i></a>  
+                        </span>
+                    </div>
+                </form>
 
-<img src="{{ post.meme.url }}" width="100" height="100"> <br>
-<h2>{{ post.title }}</h2>
-Description: {{ post.description }} <br>
-Author: {{ post.author }} <br>
-Cateogry: 
-{% for cat in post.category.all %}
-	{{ cat.name }} <br>
-{% endfor %}
+                <ul class="comments-list">
+                    {% for comment in comments %}
+                    <li class="comment">
+                        <a class="pull-left" href="#">
+                            <img class="avatar" src="https://bootdey.com/img/Content/user_2.jpg" alt="avatar">
+                        </a>
+                        <div class="comment-body">
+                            <div class="comment-heading">
+                                <h4 class="user">{{comment.author}}</h4>
+                                <h5 class="time">{{comment.date}}</h5>
+                            </div>
+                            <p>{{comment.content}}</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
 
-<!-- COMMENTS  -->
-<h2>Leave your comment!</h2>
-<div id="comments_section">
-
-	<form method="POST">
-		{% csrf_token %}
-		<div class="form-group">
-			{{ comment_form }}
-			<button class="btn btn-info" type="submit">Add comment <i class="fas fa-comments"></i></button>
-		</div>
-	</form>
-
-	{% if not user.is_authenticated %}
-  <a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to add a comment!</a><br>
-  {% endif %}
-
-  {% if comments %}
-  <strong class="text-secondary">{{ object.number_of_comments }} Comment{{ object.number_of_comments|pluralize }}</strong>
-  <hr>
-  <ul>
-    {% for comment in comments %}
-    <li>           
-     <div>
-        <span>
-          <strong class="text-info">{{ comment.author }} </strong>
-          <small class="text-muted">{{ comment.date_posted }}</small>
-        </span>
-        <p>
-          {{ comment.content|safe }}
-        </p>
-      </div>
-    </li>
-    {% endfor %}
-  </ul>
-  {% else %}
-    <strong class="text-secondary">No comments yet...</strong>
-  {% endif %}
-
+            </div>
+        </div>
+    </div>
 </div>
-
 {% endblock %}

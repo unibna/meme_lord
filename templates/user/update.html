@@ -1,15 +1,15 @@
 {% extends 'base/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
-<div class="container center_div">
+<div class="container center_div my-4">
 
   {% if user.is_authenticated %}
   <h2>Change User Profile</h2>
   
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{form.as_p}}
+    {{form|crispy}}
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
   {% else %}

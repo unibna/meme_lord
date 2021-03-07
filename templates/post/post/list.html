@@ -1,17 +1,24 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block content %}
+<!-- Page Content -->
+<div class="container">
 
-<h1>Post List</h1>
+  <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">All posts</h1>
 
-{% for post in object_list %}
+  <hr class="mt-2 mb-5">
 
-	<img src="{{ post.meme.url }}" width="100" height="100"> <br>
-	<a href="{{ post.get_absolute_url }}">{{ post.title }}</a> <br>
-	{{ post.description }} <br>
+  <div class="row text-center text-lg-left">
 
-	<br><br>
+    {% for post in object_list %} 
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="{{post.get_absolute_url}}" class="d-block mb-4 h-100">
+          <img class="img-fluid img-thumbnail" src="{{post.meme.url}}" alt="">
+        </a>
+      </div>
+    {% endfor %}
 
-{% endfor %}
-
+</div>
+<!-- /.container -->
 {% endblock %}

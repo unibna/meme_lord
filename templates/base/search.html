@@ -1,17 +1,38 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block content %}
+<!-- Page Content -->
+<div class="container">
 
-<h1>Search</h1>
+  <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">Search Engine</h1>
 
-<form class="form-inline mx-2 my-2 my-lg-0">
-  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
-  <button class="btn btn-warning my-2 my-sm-0" type="submit">Search</button>
-</form>
+  <hr class="mt-2 mb-5">
 
-{% for obj in object_list %}
-  {{obj.title}}
-  <hr>
-{% endfor %}
+  {% if is_empty_result == True %}
+  <center>
+    <h2>Oops</h2>
+    <small>Nothing found!</small><br>
+    <img src="{% static 'base/img/nothing_found.jpeg' %}">
+  </center>
+  {% endif %}
 
+  <div class="row">
+    {% for cat in categories %}
+      <a class="btn btn-sm btn-outline-warning m-2" href="{{cat.get_absolute_url}}">{{ cat }}</a>
+    {% endfor %}
+  </div>
+
+  <div class="row text-center text-lg-left">
+
+    {% for post in posts %} 
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="{{post.get_absolute_url}}" class="d-block mb-4 h-100">
+          <img class="img-fluid img-thumbnail" src="{{post.meme.url}}" alt="">
+        </a>
+      </div>
+    {% endfor %}
+
+</div>
+<!-- /.container -->
 {% endblock %}

@@ -24,8 +24,8 @@ from . import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='base/home.html'), name='home'),
-    path('base/', include('apps.base.urls')),
+    # path('', TemplateView.as_view(template_name='base/home.html'), name='home'),
+    path('', include('apps.base.urls')),
     path('user/', include('apps.user.urls')),
     path('user/', include('django.contrib.auth.urls')),
     path('post/', include('apps.post.urls')),

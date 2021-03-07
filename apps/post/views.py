@@ -41,6 +41,7 @@ class CategoryDetailView(DetailView):
         context = super().get_context_data(*args, **kwargs)
 
         # __in: return the post'category in the queryset
+        context['title'] = self.kwargs[self.slug_url_kwarg]
         context['posts'] = Post.objects.filter(category__in=self.get_object())
 
         return context
@@ -69,18 +70,17 @@ class PostDetailView(DetailView):
     # slug_url_kwarg = 'post'
 
     def get_context_data(self, *args, **kwargs):
-        
-        data = super().get_context_data(*args, **kwargs)
+        context = super().get_context_data(*args, **kwargs)
+
 
         # get commetn related to this post
         # in order by date
         comments = Comment.objects.filter(post=self.get_object()).order_by('date')
-        # add the query to the current data
-        data['comments'] = comments
-        data['comment_form'] = forms.CommentCreateForm()
-        print(data['comment_form'])
+        # add the query to the current context
+        context['comments'] = comments
+        context['comment_form'] = forms.CommentCreateForm()
 
-        return data
+        return context
 
     def post(self, request, *arg, **kwargs):
 
@@ -95,21 +95,3 @@ class PostDetailView(DetailView):
                             )
         new_comment.save()
         return self.get(self, request,*arg, **kwargs)
-
-
-class SearchingView(ListView):
-
-    model = Post
-    template_name = 'base/search.html'
-
-    def get_context_data(self, *args, **kwargs):
-
-        data = super().get_context_data(*args, **kwargs)
-
-        posts = Post.objects.filter(title__contains="em")
-        categories = Category.objects.filter(name__contains="em")
-
-        for field in data:
-            print(field) 
-
-        return data

@@ -1,18 +1,32 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block content %}
+<!-- Page Content -->
+<div class="container">
 
-<h1>Category Detail</h1>
-<h2>{{ category.name }}</h2>
-<small>This page shows all post related to this category</small>
-<br>
-<small>Coming soon ... </small>
-<hr>
-{% for post in posts %}
-    <h3>{{post}}</h3>
-    {{post.description}}
-    <hr>
-{% endfor %}
+  <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">{{title}}</h1>
 
+  <hr class="mt-2 mb-5">
 
+  <div class="row text-center text-lg-left">
+
+    {% for post in posts %} 
+      <div class="col-lg-3 col-md-4 col-6">
+        <a href="{{post.get_absolute_url}}" class="d-block mb-4 h-100">
+          <img class="img-fluid img-thumbnail" src="{{post.meme.url}}" alt="">
+        </a>
+      </div>
+    {% empty %} 
+    <div class="col-lg-3 col-md-4 col-6">
+        <h2>Oops</h2>
+        <p>There is nothing here!</p>
+        <a type="button" class="btn btn-sm btn-outline-success" href="{% url 'post_create' %}">Create a New Post</a>
+        <br><br>
+        <a type="button" class="btn btn-sm btn-outline-success" href="{% url 'category_list' %}">Back</a>
+      </div>
+    {% endfor %}
+
+</div>
+<!-- /.container -->
 {% endblock %}

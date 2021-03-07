@@ -21,3 +21,6 @@ class UserProfile(AbstractUser):
         # combine 'user_profile' url to username field (aka a slug in this case)
 
         return reverse('user_update', kwargs={'username': self.username})
+
+    def get_avater_url(self):
+        return self.avatar.url 

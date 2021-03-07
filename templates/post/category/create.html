@@ -1,5 +1,5 @@
 {% extends 'base/base.html' %}
-
+{% load crispy_forms_tags %}
 
 {% block content %}
 
@@ -7,12 +7,12 @@
 
     <h2>Category Creation</h2>
     
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" novalidate>
       {% csrf_token %}
-      {{form.as_p}}
-      <button type="submit" class="btn btn-primary">Add</button>
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-primary">Post</button>
     </form>
   
-  </div>
+</div>
 
 {% endblock %}

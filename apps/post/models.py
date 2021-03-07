@@ -4,6 +4,8 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.urls import reverse, reverse_lazy
 
+ANONYMOUS_DEFAULT = "Anonymous"
+
 # Create your models here.
 class Category(models.Model):
     # id field created in defautl
@@ -48,6 +50,7 @@ class Post(models.Model):
     description = models.TextField()
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     category = models.ManyToManyField(Category)
+    date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
@@ -86,8 +89,6 @@ class Post(models.Model):
 class Comment(models.Model):
     # id field created in defautl
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
-    author = models.CharField(max_length=150, default="Anonymous", blank=True)
+    author = models.CharField(max_length=150, default=ANONYMOUS_DEFAULT, blank=True)
     content = models.TextField()
     date = models.DateTimeField(default=timezone.now)
-
-
