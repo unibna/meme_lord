@@ -81,6 +81,21 @@ class Post(models.Model):
         
         return reverse('post_detail', kwargs={'slug': self.slug})
 
+    def get_update_url(self):
+  
+        if not self.slug:
+            self.slug = self.__generate_unique_slug()
+        
+        return reverse('post_update', kwargs={'slug': self.slug})
+
+    def get_delete_url(self):
+  
+        if not self.slug:
+            self.slug = self.__generate_unique_slug()
+        
+        return reverse('post_delete', kwargs={'slug': self.slug})
+
+
     @property
     def number_of_comments(self):
         return Comment.objects.filter(post=self).count()

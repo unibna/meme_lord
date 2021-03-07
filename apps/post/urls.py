@@ -12,6 +12,7 @@ urlpatterns = [
     path('post/', views.PostListView.as_view(), name='post_list'),
     path('post/create/', views.PostCreateView.as_view(), name='post_create'),
     url(r'^post/(?P<slug>[-\w]+)/$', views.PostDetailView.as_view(), name="post_detail"),
-
+    url(r'^post/update/(?P<slug>[-\w]+)/$', views.PostUpdateView.as_view(), name="post_update"),
+    url(r'^post/delete/(?P<slug>[-\w]+)/$', views.PostDeleteView.as_view(), name="post_delete"), 
     # path('search', views.SearchingView.as_view(), name='search'),
 ]

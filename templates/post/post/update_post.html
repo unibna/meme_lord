@@ -1,0 +1,24 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container center_div mt-4">
+
+  {% if user.is_authenticated %}
+    <h2>Post Update</h2>
+
+    <form method="post" enctype="multipart/form-data" novalidate>
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+    {% else %} 
+    <h2>Login first, please!</h2>
+    <a type="button" class="btn btn-sm btn-outline-warning" href="{% url 'user_login' %}">Login</a>
+    <hr>
+    {% endif %}
+  
+</div>
+
+{% endblock %}
