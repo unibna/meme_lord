@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 
 from .models import *
 from . import forms
@@ -61,6 +63,29 @@ class PostListView(ListView):
     template_name = 'post/post/list.html'
     queryset = Post.objects.all()
 
+class PostUpdateView(UpdateView, LoginRequiredMixin):
+
+    def dispatch(self, request, *args, **kwargs):
+        handler = super().dispatch(request, *args, **kwargs)
+        user = request.user
+        post = self.get_object()
+        if not (post.author == user or user.is_superuser):
+            raise PermissionDenied
+        return handler
+
+    model = Post
+    fields = ['title', 'meme', 'description', 'category', 'date']
+    template_name = 'post/post/update_post.html'
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    def get_queryset(self):
+        qs = super(PostDeleteView, self).get_queryset().filter(author=self.request.user.id)
+        if any(qs) is False:
+            raise PermissionDenied
+        return qs
+    model = Post
+    template_name = 'post/post/delete_post.html'
+    success_url = reverse_lazy('home')
 
 class PostDetailView(DetailView):
 

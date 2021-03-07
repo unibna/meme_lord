@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container center_div">
+
+    <h2>Post Delete</h2>
+    <h3>Delete: {{ post.title }}</h3>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Delete Post</button>
+    </form>
+  
+</div>
+
+{% endblock %}
