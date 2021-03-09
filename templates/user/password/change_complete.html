@@ -1,0 +1,9 @@
+{% extends 'base/base.html' %} 
+
+{% block content%}
+<div class="container mt-4">
+  <h2>Change Password Successfully!</h2>
+  <p>Back to, <a href="{% url 'home' %}">Home</a></p>
+  <a href="{% url 'logout' %}">Logout</a>
+</div>
+{% endblock%}

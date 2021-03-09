@@ -4,15 +4,16 @@ from .models import UserProfile
 
 
 class UserProfileCreationForm(UserCreationForm):
-    
 
     class Meta(UserCreationForm.Meta):
     
         model = UserProfile
         fields = ('username',)
 
+
 class UserProfileChangeForm(UserChangeForm):
-    
+    password = None
+
     class Meta(UserCreationForm.Meta):
     
         model = UserProfile

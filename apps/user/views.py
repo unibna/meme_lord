@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import PasswordChangeView, PasswordChangeDoneView
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
@@ -10,7 +11,6 @@ from .models import UserProfile
 from apps.post.models import Post
 
 
-# Create your views here.
 class RegisterView(CreateView):
 
     model = UserProfile
@@ -63,6 +63,19 @@ class UserProfileDetailView(DetailView):
         return context
 
 
+# Change Password
+class UserProfilePasswordChangeView(PasswordChangeView):
+
+    template_name = 'user/password/change.html'
+    success_url = reverse_lazy('password_change_complete')
+
+
+class UserProfilePasswordChangeDoneView(PasswordChangeDoneView):
+
+    template_name = 'user/password/change_complete.html'
+
+
+# Reset Password
 class UserProfilePasswordResetView(PasswordResetView):
 
     template_name = 'user/password/reset.html'
@@ -75,13 +88,14 @@ class UserProfilePasswordResetDoneView(PasswordResetDoneView):
     template_name = 'user/password/reset_done.html'
 
 
-# class UserProfilePasswordResetConfirmView(PasswordResetConfirmView):
+class UserProfilePasswordResetConfirmView(PasswordResetConfirmView):
 
-#     template_name = 'user/password/reset_confirm.html'
+    template_name = 'user/password/reset_confirm.html'
+    success_url = reverse_lazy('_password_reset_complete')
 
 
-# class UserProfilePasswordResetCompleteView(PasswordResetCompleteView):
+class UserProfilePasswordResetCompleteView(PasswordResetCompleteView):
 
-#     template_name = 'user/password/reset_complete.html'
+    template_name = 'user/password/reset_complete.html'
 
 
