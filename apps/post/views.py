@@ -1,18 +1,20 @@
 from django.shortcuts import render
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.paginator import Paginator, Page
 
 from .models import *
 from . import forms
 
 from itertools import chain
 
+# Exploding1627606656kitten
 
 class CategoryCreationView(CreateView):
 
     model = Category
-    fields = '__all__'
+    fields = ['name']
     template_name = 'post/category/create.html'
 
 
@@ -20,6 +22,7 @@ class CategoryListView(ListView):
 
     model = Category
     template_name = 'post/category/list.html'
+    paginate_by = 5
     queryset = Category.objects.all()
 
 
@@ -37,14 +40,13 @@ class CategoryDetailView(DetailView):
         # replace objects.get() by objects.filter
         # cause the get function can not handle in the case 
         # more than 2 result returned
-        return Category.objects.filter(slug=self.kwargs[self.slug_url_kwarg])
+        return Category.objects.get(slug=self.kwargs[self.slug_url_kwarg])
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
 
         # __in: return the post'category in the queryset
-        context['title'] = self.kwargs[self.slug_url_kwarg]
-        context['posts'] = Post.objects.filter(category__in=self.get_object())
+        context['posts'] = Post.objects.filter(category=self.get_object())
 
         return context
 
@@ -52,18 +54,33 @@ class CategoryDetailView(DetailView):
 class PostCreateView(CreateView):
 
     model = Post
-    # form_class = forms.PostCreateForm
-    fields = '__all__'
+    form_class = forms.PostCreateForm
+    # fields = '__all__'
     template_name = 'post/post/create.html'
+
+    def form_valid(self, form):
+        user = self.request.user
+        if user.is_anonymous:
+            raise PermissionDenied
+        
+        # auto add user'info to the post
+        form.instance.author = user
+        return super().form_valid(form)
 
 
 class PostListView(ListView):
 
     model = Post
     template_name = 'post/post/list.html'
+    paginate_by = 10
     queryset = Post.objects.all()
 
+
 class PostUpdateView(UpdateView, LoginRequiredMixin):
+
+    model = Post
+    fields = ['title', 'meme', 'description', 'category', 'date']
+    template_name = 'post/post/update.html'
 
     def dispatch(self, request, *args, **kwargs):
         handler = super().dispatch(request, *args, **kwargs)
@@ -73,19 +90,19 @@ class PostUpdateView(UpdateView, LoginRequiredMixin):
             raise PermissionDenied
         return handler
 
-    model = Post
-    fields = ['title', 'meme', 'description', 'category', 'date']
-    template_name = 'post/post/update_post.html'
+    
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):
+
     def get_queryset(self):
         qs = super(PostDeleteView, self).get_queryset().filter(author=self.request.user.id)
         if any(qs) is False:
             raise PermissionDenied
         return qs
     model = Post
-    template_name = 'post/post/delete_post.html'
+    template_name = 'post/post/delete.html'
     success_url = reverse_lazy('home')
+
 
 class PostDetailView(DetailView):
 

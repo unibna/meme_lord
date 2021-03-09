@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -14,7 +15,7 @@ class RegisterView(CreateView):
 
     model = UserProfile
     form_class = UserProfileCreationForm
-    template_name = 'user/register.html'
+    template_name = 'user/profile/register.html'
     success_url = reverse_lazy('user_login')
 
 
@@ -22,7 +23,7 @@ class UserProfileUpdateView(UpdateView):
     
     model = UserProfile
     form_class = UserProfileChangeForm
-    template_name = 'user/update.html'
+    template_name = 'user/profile/update.html'
     slug_field = 'username' # the name of field on the model
     slug_url_kwarg = 'username' # the name of url keyword
 
@@ -36,14 +37,14 @@ class UserProfileUpdateView(UpdateView):
 
 class CustomLoginView(LoginView):
 
-    template_name = 'user/login.html'
+    template_name = 'user/profile/login.html'
     success_url = reverse_lazy('home')
 
 
 class UserProfileDetailView(DetailView):
     
     model = UserProfile
-    template_name = 'user/profile.html'
+    template_name = 'user/profile/profile.html'
     slug_field = 'username' # the name of slug field on model (also is looking up field)
     slug_url_kwarg = 'username' # the name of kwargs in url
     field = '__all__'
@@ -60,5 +61,27 @@ class UserProfileDetailView(DetailView):
         context['posts'] = posts
 
         return context
+
+
+class UserProfilePasswordResetView(PasswordResetView):
+
+    template_name = 'user/password/reset.html'
+    email_template_name = 'user/password/reset_email.html'
+    subject_template_name = 'user/password/reset_subject.txt'
+        
+
+class UserProfilePasswordResetDoneView(PasswordResetDoneView):
+
+    template_name = 'user/password/reset_done.html'
+
+
+# class UserProfilePasswordResetConfirmView(PasswordResetConfirmView):
+
+#     template_name = 'user/password/reset_confirm.html'
+
+
+# class UserProfilePasswordResetCompleteView(PasswordResetCompleteView):
+
+#     template_name = 'user/password/reset_complete.html'
 
 

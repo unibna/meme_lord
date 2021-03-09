@@ -54,11 +54,15 @@
                     {% for comment in comments %}
                     <li class="comment">
                         <a class="pull-left" href="#">
-                            <img class="avatar" src="https://bootdey.com/img/Content/user_2.jpg" alt="avatar">
+                            {% if comment.is_anonymous_comment %}
+                            <img class="avatar" src="{{MEDIA_URL}}avatar/unknow.png" alt="avatar">
+                            {% else %}
+                            <img class="avatar" src="{{comment.get_author.avatar.url}}" alt="avatar">
+                            {% endif %}
                         </a>
                         <div class="comment-body">
                             <div class="comment-heading">
-                                <h4 class="user">{{comment.author}}</h4>
+                                <h4 class="user"><a href="{{comment.get_author.get_profile_url}}">{{comment.author}}</a></h4>
                                 <h5 class="time">{{comment.date}}</h5>
                             </div>
                             <p>{{comment.content}}</p>

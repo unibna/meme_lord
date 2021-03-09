@@ -4,19 +4,20 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.urls import reverse, reverse_lazy
 
+from apps.user.models import UserProfile
+
 ANONYMOUS_DEFAULT = "Anonymous"
 
 # Create your models here.
 class Category(models.Model):
     # id field created in defautl
     name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(max_length=255, null=True)
+    slug = models.SlugField(max_length=255, unique=True, null=True)
 
     def __str__(self):
         return self.name
 
     def __generate_unique_slug(self):
-
         unique_slug = slugify(self.name)
         counter = 1
         
@@ -29,13 +30,11 @@ class Category(models.Model):
         return checking_slug
 
     def save(self, *args, **kwargs):
-
         if not self.slug:
             self.slug = self.__generate_unique_slug()
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        
         if not self.slug:
             self.slug = self.__generate_unique_slug()
         
@@ -45,7 +44,7 @@ class Category(models.Model):
 class Post(models.Model):
     # id field created in defautl
     title = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(max_length=255, null=True)
+    slug = models.SlugField(max_length=255, unique=True, null=True)
     meme = models.ImageField(upload_to='meme/')
     description = models.TextField()
     author = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
@@ -56,7 +55,6 @@ class Post(models.Model):
         return self.title
 
     def __generate_unique_slug(self):
-
         unique_slug = slugify(self.title)
         counter = 1
         
@@ -69,32 +67,27 @@ class Post(models.Model):
         return checking_slug
 
     def save(self, *args, **kwargs):
-
         if not self.slug:
             self.slug = self.__generate_unique_slug()
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        
         if not self.slug:
             self.slug = self.__generate_unique_slug()
         
         return reverse('post_detail', kwargs={'slug': self.slug})
 
     def get_update_url(self):
-  
         if not self.slug:
             self.slug = self.__generate_unique_slug()
         
         return reverse('post_update', kwargs={'slug': self.slug})
 
     def get_delete_url(self):
-  
         if not self.slug:
             self.slug = self.__generate_unique_slug()
         
         return reverse('post_delete', kwargs={'slug': self.slug})
-
 
     @property
     def number_of_comments(self):
@@ -107,3 +100,15 @@ class Comment(models.Model):
     author = models.CharField(max_length=150, default=ANONYMOUS_DEFAULT, blank=True)
     content = models.TextField()
     date = models.DateTimeField(default=timezone.now)
+
+    def is_anonymous_comment(self):
+        if self.author == ANONYMOUS_DEFAULT:
+            return True
+        return False
+
+    def get_author(self):
+        if self.author == ANONYMOUS_DEFAULT:
+            return UserProfile.objects.none()
+        user = UserProfile.objects.get(username=self.author)
+        print('[Comment Model]',user)
+        return user
