@@ -32,7 +32,7 @@ DEBUG = True
 # DEBUG = False
 
 # ALLOWED_HOSTS = ['lordofmeme.herokuapp.com','127.0.0.1','localhost']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
