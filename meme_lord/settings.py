@@ -28,10 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'j311hpd+d(v-46ww)n_y3kbf9g^u!nr8r&#c=e+sx#7v(+p+4)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
-ALLOWED_HOSTS = ['lordofmeme.herokuapp.com','127.0.0.1','localhost']
+# ALLOWED_HOSTS = ['lordofmeme.herokuapp.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -147,6 +148,8 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL  = '/media/'
 
+
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIT_PORT = 587
@@ -154,10 +157,11 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nguyenduylan711@gmail.com    '
 EMAIL_HOST_PASSWORD = 'qyurcmynsyolcywf'
 
-# launch config
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedMainifestStaticFileStorage'
 
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# # Heroku config
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedMainifestStaticFileStorage'
 
-django_on_heroku.settings(locals())
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
+
+# django_on_heroku.settings(locals())
