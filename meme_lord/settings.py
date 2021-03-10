@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+import django_on_heroku
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'meme_lord.urls'
@@ -137,15 +140,17 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL  = '/media/'
 
-# if DEBUG: 
-#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # development only
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIT_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nguyenduylan711@gmail.com    '
-# EMAIL_HOST_PASSWORD = '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'
 EMAIL_HOST_PASSWORD = 'qyurcmynsyolcywf'
+
+# launch config
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedMainifestStaticFileStorage'
+django_on_heroku.settings(locals())
