@@ -28,11 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'j311hpd+d(v-46ww)n_y3kbf9g^u!nr8r&#c=e+sx#7v(+p+4)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+DEBUG = False
 
-# ALLOWED_HOSTS = ['lordofmeme.herokuapp.com','127.0.0.1','localhost']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['lordofmeme.herokuapp.com','127.0.0.1','localhost']
 
 
 # Application definition
@@ -158,10 +156,10 @@ EMAIL_HOST_USER = 'nguyenduylan711@gmail.com    '
 EMAIL_HOST_PASSWORD = 'qyurcmynsyolcywf'
 
 
-# # Heroku config
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedMainifestStaticFileStorage'
+# Heroku config
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedMainifestStaticFileStorage'
 
-# db_from_env = dj_database_url.config(conn_max_age=500)
-# DATABASES['default'].update(db_from_env)
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
-# django_on_heroku.settings(locals())
+django_on_heroku.settings(locals())
