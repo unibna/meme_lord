@@ -31,8 +31,7 @@ SECRET_KEY = 'j311hpd+d(v-46ww)n_y3kbf9g^u!nr8r&#c=e+sx#7v(+p+4)'
 DEBUG = True
 # DEBUG = False
 
-# ALLOWED_HOSTS = ['lordofmeme.herokuapp.com','127.0.0.1','localhost']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['lordofmeme.herokuapp.com','127.0.0.1','localhost']
 
 
 # Application definition
