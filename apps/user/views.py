@@ -19,6 +19,12 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('user_login')
 
 
+class CustomLoginView(LoginView):
+
+    template_name = 'user/profile/login.html'
+    success_url = reverse_lazy('home')
+
+
 class UserProfileUpdateView(UpdateView):
     
     model = UserProfile
@@ -28,17 +34,7 @@ class UserProfileUpdateView(UpdateView):
     slug_url_kwarg = 'username' # the name of url keyword
 
     def get_success_url(self, **kwargs):
-        # reverse('a:b') # /a/b
-        # username = self.get_object().username
-        # handle avatar image path
-    
-        return reverse('user_profile', kwargs={'username': user.username})
-
-
-class CustomLoginView(LoginView):
-
-    template_name = 'user/profile/login.html'
-    success_url = reverse_lazy('home')
+        return reverse('user_profile', kwargs={'username': self.get_object().username})
 
 
 class UserProfileDetailView(DetailView):
@@ -49,8 +45,8 @@ class UserProfileDetailView(DetailView):
     slug_url_kwarg = 'username' # the name of kwargs in url
     field = '__all__'
 
-    def get_object(self):
-        return UserProfile.objects.get(username=self.kwargs[self.slug_url_kwarg])
+    # def get_object(self):
+    #     return UserProfile.objects.get(username=self.kwargs[self.slug_url_kwarg])
 
     def get_context_data(self, *arg, **kwargs):
         context = super().get_context_data(*arg, **kwargs)

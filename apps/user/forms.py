@@ -8,7 +8,7 @@ class UserProfileCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
     
         model = UserProfile
-        fields = ('username',)
+        fields = ('username','email')
 
 
 class UserProfileChangeForm(UserChangeForm):

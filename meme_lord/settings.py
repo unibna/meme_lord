@@ -140,12 +140,12 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL  = '/media/'
 
-if DEBUG: 
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # development only
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp.sendgrid.net'
-    EMAIT_PORT = 587
-    EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = 'apikey'
-    EMAIL_HOST_PASSWORD = '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'
+# if DEBUG: 
+#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' # development only
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIT_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'nguyenduylan711@gmail.com    '
+# EMAIL_HOST_PASSWORD = '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'
+EMAIL_HOST_PASSWORD = 'qyurcmynsyolcywf'

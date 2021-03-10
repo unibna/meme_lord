@@ -17,10 +17,10 @@
                 <div class="pull-left meta">
                     <div class="title h5">
                         <a href="{{post.author.get_profile_url}}"><b>{{post.author.username}}</b></a>
-                        made a post.<br/>
+                        made a post.
                         {% if post.author.id == user.id %}
-                        <a href="{{ post.get_update_url }}"> Update </a><br/>
-                        <a href="{{ post.get_delete_url }}"> Delete </a><br/>
+                        <a href="{{ post.get_update_url }}"><small>Update</small></a>
+                        <a href="{{ post.get_delete_url }}"><small>Delete</small></a>
                         {% endif %}
                     </div>
                     <h6 class="text-muted time">{{post.date}}</h6>
