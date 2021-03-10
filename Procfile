@@ -1,1 +1,1 @@
-web: gunicorn meme_lord.wsgi
+web: gunicorn meme_lord.wsgi --log-file -
