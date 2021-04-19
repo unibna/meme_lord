@@ -12,9 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
-import django_on_heroku
-import dj_database_url
-from decouple import config
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,7 +28,8 @@ SECRET_KEY = 'j311hpd+d(v-46ww)n_y3kbf9g^u!nr8r&#c=e+sx#7v(+p+4)'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ['lordofmeme.herokuapp.com','127.0.0.1','localhost']
+# ALLOWED_HOSTS = ['lordofmeme.herokuapp.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -60,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'meme_lord.urls'
@@ -154,12 +152,3 @@ EMAIT_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'nguyenduylan711@gmail.com    '
 EMAIL_HOST_PASSWORD = 'qyurcmynsyolcywf'
-
-
-# Heroku config
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedMainifestStaticFileStorage'
-
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
-
-django_on_heroku.settings(locals())
